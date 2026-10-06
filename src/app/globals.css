@@ -1,26 +1,191 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ==========================================================================
+   NEXJEN INC. PLUMBING CONTRACTORS — Design Tokens
+   License #CT34304 · nexjeninc.com
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+   Palette sampled from the brand mark (public/images/logo.png):
+   a chrome-and-brass skull over crossed pipe wrenches on true black.
+   Three materials drive the whole system:
+     · INK    — true black through gunmetal (ground, surfaces, chrome shadow)
+     · SILVER — brushed steel through chrome highlight (body copy, strokes)
+     · GOLD   — deep brass through polished gold (accent, CTAs, emphasis)
+   Dark is the only mode. There is no light theme to swap to.
+   ========================================================================== */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@theme {
+  /* --- Ink: true black → gunmetal → raised steel ------------------------- */
+  --color-ink-950: #000000;
+  --color-ink-900: #06070a;
+  --color-ink-850: #0b0d11;
+  --color-ink-800: #11141a;
+  --color-ink-700: #181c23;
+  --color-ink-600: #22272f;
+  --color-ink-500: #2f353f;
+  --color-ink-400: #424a56;
+  --color-ink-300: #5a636f;
+  --color-ink-200: #78828f;
+
+  /* --- Silver: brushed steel → chrome highlight -------------------------- */
+  --color-silver-600: #808a95;
+  --color-silver-500: #99a2ac;
+  --color-silver-400: #b3bbc3;
+  --color-silver-300: #ccd2d8;
+  --color-silver-200: #e1e5e9;
+  --color-silver-100: #f2f4f6;
+
+  /* --- Gold: deep brass → polished gold ---------------------------------- */
+  --color-gold-900: #3d2906;
+  --color-gold-800: #5e400a;
+  --color-gold-700: #875d10;
+  --color-gold-600: #ad7b16;
+  --color-gold-500: #d4a017; /* primary brand gold */
+  --color-gold-400: #e4b63c;
+  --color-gold-300: #f0cf72;
+  --color-gold-200: #f7e3a8;
+  --color-gold-100: #fcf2d6;
+
+  /* --- Ember: the glow in the mark's eyes (alerts, live status) ---------- */
+  --color-ember-600: #e07a0c;
+  --color-ember-500: #ff9a1f;
+  --color-ember-400: #ffb355;
+
+  /* --- Semantic aliases -------------------------------------------------- */
+  --color-background: var(--color-ink-950);
+  --color-surface: var(--color-ink-900);
+  --color-surface-raised: var(--color-ink-800);
+  --color-surface-sunken: var(--color-ink-950);
+  --color-foreground: var(--color-silver-100);
+  --color-foreground-muted: var(--color-silver-500);
+  --color-foreground-subtle: var(--color-ink-200);
+  --color-border: var(--color-ink-600);
+  --color-border-strong: var(--color-ink-500);
+  --color-accent: var(--color-gold-500);
+  --color-accent-hover: var(--color-gold-400);
+  --color-accent-muted: var(--color-gold-800);
+  --color-on-accent: var(--color-ink-950);
+
+  /* --- Type -------------------------------------------------------------- */
+  --font-display: var(--font-geist-sans), "Helvetica Neue", Arial, sans-serif;
+  --tracking-display: -0.025em;
+  --tracking-eyebrow: 0.18em;
+
+  /* --- Radii ------------------------------------------------------------- */
+  --radius-card: 0.875rem;
+  --radius-panel: 1.25rem;
+
+  /* --- Elevation & metal lighting ---------------------------------------- */
+  --shadow-panel: 0 1px 0 0 --alpha(var(--color-silver-100) / 6%) inset,
+    0 24px 48px -24px #000000;
+  --shadow-gold: 0 0 0 1px --alpha(var(--color-gold-500) / 35%),
+    0 12px 32px -12px --alpha(var(--color-gold-500) / 45%);
+  --shadow-gold-lg: 0 0 0 1px --alpha(var(--color-gold-400) / 55%),
+    0 18px 48px -14px --alpha(var(--color-gold-500) / 60%);
+
+  /* --- Motion ------------------------------------------------------------ */
+  --ease-brand: cubic-bezier(0.22, 1, 0.36, 1);
+  --animate-shimmer: shimmer 2.8s var(--ease-brand) infinite;
+
+  @keyframes shimmer {
+    0% {
+      background-position: 200% 50%;
+    }
+    100% {
+      background-position: -200% 50%;
+    }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Font vars are injected on <html> by next/font in layout.tsx, so these are
+   resolved inline rather than emitted as another layer of indirection. */
+@theme inline {
+  --font-sans: var(--font-geist-sans), "Helvetica Neue", Arial, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background-color: var(--color-gold-500);
+    color: var(--color-ink-950);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-gold-500);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+/* --- Brand utilities ------------------------------------------------------ */
+
+/* Polished-brass text, as on the wordmark. */
+@utility text-metal-gold {
+  background-image: linear-gradient(
+    175deg,
+    var(--color-gold-200) 0%,
+    var(--color-gold-500) 42%,
+    var(--color-gold-800) 58%,
+    var(--color-gold-400) 100%
+  );
+  background-clip: text;
+  color: transparent;
+}
+
+/* Brushed-chrome text, as on the pipe wrenches. */
+@utility text-metal-silver {
+  background-image: linear-gradient(
+    175deg,
+    var(--color-silver-100) 0%,
+    var(--color-silver-400) 44%,
+    var(--color-ink-400) 56%,
+    var(--color-silver-300) 100%
+  );
+  background-clip: text;
+  color: transparent;
+}
+
+/* Hairline bevel that reads as a machined edge on dark panels. */
+@utility edge-bevel {
+  box-shadow:
+    0 1px 0 0 --alpha(var(--color-silver-100) / 8%) inset,
+    0 -1px 0 0 --alpha(var(--color-ink-950) / 80%) inset;
+}
+
+/* Section ground: black with a faint brass wash bleeding up from the floor. */
+@utility bg-forge {
+  background-image: radial-gradient(
+    120% 80% at 50% 100%,
+    --alpha(var(--color-gold-900) / 45%) 0%,
+    transparent 70%
+  );
+  background-color: var(--color-background);
+}
+
+/* The same brass wash with no ground behind it, for layering over imagery.
+   Authored here rather than as an arbitrary `bg-[radial-gradient(...)]` value,
+   because Tailwind's `/opacity` shorthand is only valid in color utilities —
+   inside a gradient it emits `var(--color)/35%`, which browsers drop. */
+@utility wash-brass {
+  background-image: radial-gradient(
+    90% 60% at 50% 100%,
+    --alpha(var(--color-gold-900) / 35%) 0%,
+    transparent 70%
+  );
 }
