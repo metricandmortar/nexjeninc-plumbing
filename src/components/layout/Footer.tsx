@@ -11,6 +11,7 @@ import {
 
 import MagneticCta from "@/components/ui/MagneticCta";
 import { CTA, FOOTER_NAV, SITE } from "@/lib/constants";
+import { LEGAL_DOCUMENTS } from "@/lib/legal";
 import { cn, isPresent } from "@/lib/utils";
 
 export default function Footer() {
@@ -168,9 +169,26 @@ export default function Footer() {
 
         {/* Baseline */}
         <div className="mt-14 flex flex-col gap-4 border-t border-ink-700 pt-8 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-xs text-foreground-subtle">
-            © {year} {SITE.legalName}. All rights reserved.
-          </p>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-6">
+            <p className="text-xs text-foreground-subtle">
+              © {year} {SITE.legalName}. All rights reserved.
+            </p>
+
+            <nav aria-label="Legal">
+              <ul className="flex flex-wrap gap-x-5 gap-y-2">
+                {LEGAL_DOCUMENTS.map((document) => (
+                  <li key={document.path}>
+                    <Link
+                      href={document.path}
+                      className="text-xs text-foreground-subtle transition-colors hover:text-silver-300"
+                    >
+                      {document.title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
 
           <span className="flex items-center gap-1.5 text-xs text-silver-400">
             <ShieldCheck

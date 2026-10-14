@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 
 import { SERVICES, SITE } from "@/lib/constants";
+import { LEGAL_DOCUMENTS } from "@/lib/legal";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
@@ -25,5 +26,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  return [...staticRoutes, ...serviceRoutes];
+  const legalRoutes: MetadataRoute.Sitemap = LEGAL_DOCUMENTS.map((document) => ({
+    url: new URL(document.path, SITE.url).toString(),
+    lastModified,
+    changeFrequency: "yearly",
+    priority: 0.2,
+  }));
+
+  return [...staticRoutes, ...serviceRoutes, ...legalRoutes];
 }
