@@ -6,6 +6,7 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { Phone, X } from "lucide-react";
 
+import MagneticCta from "@/components/ui/MagneticCta";
 import { CTA, MAIN_NAV, SERVICE_NAV, SITE } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
@@ -166,8 +167,8 @@ export default function MobileMenu({
             </nav>
 
             <div className="border-t border-ink-600 px-5 py-5">
-              <a
-                href={CTA.emergency.href}
+              <MagneticCta
+                href={CTA.phone.href}
                 onClick={onClose}
                 className={cn(
                   "flex w-full items-center justify-center gap-2 rounded-card",
@@ -176,10 +177,10 @@ export default function MobileMenu({
                 )}
               >
                 <Phone className="h-4 w-4" aria-hidden="true" />
-                {CTA.emergency.label}
-              </a>
+                {CTA.phone.label}
+              </MagneticCta>
               <p className="mt-3 text-center text-xs text-foreground-subtle">
-                {SITE.licenseLabel} · {SITE.emergencyHours}
+                {SITE.licenseLabel} · {SITE.hoursShort}
               </p>
             </div>
           </motion.div>

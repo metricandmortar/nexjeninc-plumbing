@@ -8,16 +8,18 @@
  * ---------------------------------------------------------------------------
  * COPY STATUS
  * ---------------------------------------------------------------------------
- * Service copy below is agency-drafted and needs client sign-off before launch.
- * It describes capability that the project photos support, but it asserts how
- * Nexjen works — self-performed excavation, permits pulled in-house, same-visit
- * rebuilds. Confirm each claim with the client and cut anything they do not
- * actually do. Nothing here invents credentials, years in business, warranty
- * terms, counts of jobs, or pricing.
+ * Contact details, address, and business hours are client-supplied. Service
+ * copy is agency-drafted from the project photos; nothing here invents
+ * credentials, years in business, warranty terms, counts of jobs, or pricing.
  *
- * Fields the client has not supplied yet are empty strings, never invented
- * values. `isPresent()` in `@/lib/utils` gates them, so an unfilled field is
- * simply not rendered rather than printing a placeholder to a live page.
+ * Positioning: Nexjen is a full-service plumbing company — everyday repairs
+ * and maintenance through remodels and new construction. The site makes no
+ * after-hours or emergency-response claims; contact is during office hours.
+ *
+ * The owner asked that the site carry no service-area list, and no social
+ * profiles were supplied, so neither exists in this file. `isPresent()` in
+ * `@/lib/utils` still gates optional strings so a field cleared later simply
+ * stops rendering rather than printing a placeholder to a live page.
  * ---------------------------------------------------------------------------
  */
 
@@ -90,38 +92,37 @@ export const SITE = {
   tagline: "Plumbing Contractors",
   headline: "Licensed plumbing built to last.",
   description:
-    "Nexjen Inc. Plumbing Contractors — licensed CT34304. Custom bathroom remodels, water heater installation and service, and new construction underground plumbing across Maui.",
+    "Nexjen Inc. Plumbing Contractors — licensed CT34304. Full-service residential and commercial plumbing on Maui: repairs and maintenance, water heaters, custom bathroom remodels, and new construction.",
 
   contact: {
-    phone: "(808) 870-5295",
-    phoneHref: "tel:+18088705295",
-    email: "soneboyz@yahoo.com",
-    emailHref: "mailto:soneboyz@yahoo.com",
+    phone: "(808) 757-5755",
+    phoneHref: "tel:+18087575755",
+    /** E.164 form for structured data. */
+    phoneE164: "+18087575755",
+    email: "Nexjeninc@yahoo.com",
+    emailHref: "mailto:Nexjeninc@yahoo.com",
   },
 
-  /** Street address pending from the client. Empty fields render nothing. */
   address: {
-    street: "",
-    city: "",
+    street: "140 Alamaha St.",
+    city: "Kahului",
     region: "HI",
-    postalCode: "",
+    postalCode: "96732",
     country: "US",
   },
 
-  /** Confirmed service region. Safe to render anywhere. */
+  /** Home island, used in prose and metadata. Not a service-area list. */
   serviceRegion: "Maui, Hawaiʻi",
 
-  /** Business hours pending from the client. Empty renders nothing. */
-  hours: "",
-  emergencyHours: "24/7 Emergency Service",
-  serviceAreas: ["All of Maui"],
-
-  /** Profile URLs pending from the client. Empty entries render nothing. */
-  social: [
-    { label: "Facebook", href: "" },
-    { label: "Instagram", href: "" },
-    { label: "Google", href: "" },
-  ],
+  hours: "Monday – Friday, 8:00 AM – 4:00 PM",
+  /** Compact form for tight spaces: banner pillars and the mobile menu. */
+  hoursShort: "Mon – Fri, 8 AM – 4 PM",
+  /** Machine-readable twin of `hours`, for Schema.org structured data. */
+  openingHours: {
+    days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+    opens: "08:00",
+    closes: "16:00",
+  },
 
   logo: {
     src: "/images/logo.png",
@@ -133,9 +134,37 @@ export const SITE = {
   trustSignals: [
     "Licensed CT34304",
     "Residential & commercial",
-    "New construction & remodel",
-    "Underground & slab specialists",
+    "Repairs & maintenance",
+    "Remodels & new construction",
   ],
+} as const;
+
+/* ========================================================================== */
+/*  Search                                                                     */
+/* ========================================================================== */
+
+export const SEO = {
+  /** Default <title> when a route does not set its own. */
+  defaultTitle: "Full-Service Maui Plumber | Nexjen Inc. Plumbing Contractors",
+  keywords: [
+    "Full-Service Maui Plumber",
+    "Kahului Plumbing Repairs",
+    "New Construction Plumbing Hawaii",
+    "Maui plumbing contractor",
+    "Kahului plumber",
+    "water heater installation Maui",
+    "bathroom remodel plumbing Maui",
+    "backflow testing Maui",
+    "sewer camera inspection Maui",
+    "underground plumbing Hawaii",
+  ],
+  /** Share card used by every route unless it supplies its own photo. */
+  ogImage: {
+    src: "/images/trenching-2.jpg",
+    alt: "Nexjen plumbing crew's trenched underground lines on a hillside job site overlooking the ocean on Maui",
+    width: 2560,
+    height: 1920,
+  },
 } as const;
 
 /* ========================================================================== */
@@ -411,12 +440,10 @@ export const FOOTER_NAV: readonly NavGroup[] = [
 /* ========================================================================== */
 
 export const CTA = {
-  primary: { label: "Request an Estimate", href: "/contact" },
-  secondary: { label: "See Our Work", href: "/projects" },
   phone: { label: "Call Now", href: SITE.contact.phoneHref },
-  emergency: { label: "Emergency Service", href: SITE.contact.phoneHref },
-  emergencyCall: { label: "Emergency Call", href: SITE.contact.phoneHref },
-  consultation: { label: "Book a Consultation", href: "/contact" },
+  quote: { label: "Request a Quote", href: "/contact" },
+  schedule: { label: "Schedule Service", href: "/contact" },
+  work: { label: "See Our Work", href: "/projects" },
 } as const;
 
 /* ========================================================================== */
@@ -425,13 +452,17 @@ export const CTA = {
 
 export const HERO = {
   eyebrow: SITE.licenseLabel,
-  headline: "High-Ticket Plumbing & New Construction in Maui",
+  /** Rendered as `accent` (gold) followed by `rest`. */
+  headline: {
+    accent: "Full-Service Plumbing",
+    rest: "for Maui Homes & Businesses",
+  },
   subhead:
-    "Licensed Maui contractors for the work that has to be right the first time — underground rough-in and new construction, custom bathroom remodels, and complete water heater systems. Permitted, pressure-tested, and finished to a standard that still holds up years after the inspection passes.",
+    "From leaky faucets, clogged drains, and water heater repairs to custom bathroom remodels and new construction, Nexjen handles every kind of plumbing job. One licensed team for routine maintenance and major projects alike — permitted, inspected, and done right the first time.",
   /** Swap this one line to change the hero backdrop. */
   background: {
     src: "/images/trenching-2.jpg",
-    alt: "",
+    alt: "Nexjen underground plumbing job site — trenched lines on a hillside lot overlooking the ocean on Maui",
     width: 2560,
     height: 1920,
   },

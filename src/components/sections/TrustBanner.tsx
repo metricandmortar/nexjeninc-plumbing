@@ -11,20 +11,20 @@ const PILLARS = [
   },
   {
     icon: MapPin,
-    label: "Service Area",
-    value: SITE.serviceRegion,
+    label: "Based In",
+    value: `${SITE.address.city}, Maui`,
   },
   {
     icon: Clock,
-    label: "Availability",
-    value: SITE.emergencyHours,
+    label: "Office Hours",
+    value: SITE.hoursShort,
   },
 ] as const;
 
 export default function TrustBanner() {
   return (
     <section
-      aria-label="Licensing and service area"
+      aria-label="Licensing, location, and hours"
       className="relative border-y border-ink-600 bg-surface-raised"
     >
       {/* Brass hairlines top and bottom, so the band reads as machined trim. */}

@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { ChevronDown, Menu, Phone, ShieldCheck } from "lucide-react";
 
 import MobileMenu from "@/components/layout/MobileMenu";
+import MagneticCta from "@/components/ui/MagneticCta";
 import { CTA, MAIN_NAV, SERVICE_NAV, SITE } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
@@ -182,7 +183,7 @@ export default function Header() {
             ))}
           </nav>
 
-          {/* License badge + emergency CTA */}
+          {/* License badge + call CTA */}
           <div className="ml-auto flex items-center gap-3 lg:ml-0">
             <span className="hidden items-center gap-1.5 rounded-full border border-ink-600 px-3 py-1.5 text-xs font-medium text-silver-400 xl:flex">
               <ShieldCheck
@@ -192,22 +193,22 @@ export default function Header() {
               {SITE.licenseLabel}
             </span>
 
-            <a
-              href={CTA.emergency.href}
+            <MagneticCta
+              href={CTA.phone.href}
               className={cn(
                 "group flex items-center gap-2 rounded-card bg-accent px-4 py-2.5",
                 "text-sm font-semibold text-on-accent shadow-gold",
-                "transition-all duration-200 hover:bg-accent-hover hover:shadow-gold-lg",
-                "sm:px-5",
+                "transition-[background-color,box-shadow] duration-200",
+                "hover:bg-accent-hover hover:shadow-gold-lg sm:px-5",
               )}
             >
               <Phone
                 className="h-4 w-4 transition-transform duration-200 group-hover:-rotate-12"
                 aria-hidden="true"
               />
-              <span className="hidden sm:inline">{CTA.emergency.label}</span>
-              <span className="sm:hidden">Emergency</span>
-            </a>
+              <span className="hidden sm:inline">{CTA.phone.label}</span>
+              <span className="sm:hidden">Call</span>
+            </MagneticCta>
 
             <button
               type="button"

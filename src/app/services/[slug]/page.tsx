@@ -4,9 +4,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Check, Phone } from "lucide-react";
 
+import JsonLd from "@/components/seo/JsonLd";
 import PageHeader from "@/components/sections/PageHeader";
+import MagneticCta from "@/components/ui/MagneticCta";
 import Reveal from "@/components/ui/Reveal";
-import { CTA, SERVICES, getServiceBySlug } from "@/lib/constants";
+import { CTA, SERVICES, SITE, getServiceBySlug } from "@/lib/constants";
+import { pageMetadata, serviceJsonLd } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 /** Every service page is known at build time, so all of them prerender. */
@@ -22,10 +25,13 @@ export async function generateMetadata(
 
   if (!service) return { title: "Service not found" };
 
-  return {
-    title: service.title,
-    description: service.summary,
-  };
+  return pageMetadata({
+    title: `${service.title} in Maui`,
+    description: `${service.summary} Licensed ${service.shortTitle.toLowerCase()} work by ${SITE.legalName} in ${SITE.address.city}, Maui. Call ${SITE.contact.phone}.`,
+    path: `/services/${service.slug}`,
+    image: service.image,
+    keywords: [`${service.shortTitle} Maui`, `${service.shortTitle} Kahului`],
+  });
 }
 
 export default async function ServicePage(props: PageProps<"/services/[slug]">) {
@@ -36,6 +42,8 @@ export default async function ServicePage(props: PageProps<"/services/[slug]">) 
 
   return (
     <>
+      <JsonLd data={serviceJsonLd(service)} />
+
       <PageHeader
         eyebrow={service.shortTitle}
         title={service.title}
@@ -71,8 +79,8 @@ export default async function ServicePage(props: PageProps<"/services/[slug]">) 
 
               <Reveal delay={0.16}>
                 <div className="mt-12 flex flex-col gap-3 sm:flex-row">
-                  <a
-                    href={CTA.emergencyCall.href}
+                  <MagneticCta
+                    href={CTA.phone.href}
                     className={cn(
                       "inline-flex items-center justify-center gap-2.5 rounded-card",
                       "bg-accent px-6 py-3.5 text-sm font-semibold text-on-accent",
@@ -80,18 +88,18 @@ export default async function ServicePage(props: PageProps<"/services/[slug]">) 
                     )}
                   >
                     <Phone className="h-4 w-4" aria-hidden="true" />
-                    {CTA.emergencyCall.label}
-                  </a>
-                  <Link
-                    href={CTA.consultation.href}
+                    {CTA.phone.label}
+                  </MagneticCta>
+                  <MagneticCta
+                    href={CTA.schedule.href}
                     className={cn(
                       "inline-flex items-center justify-center gap-2.5 rounded-card",
                       "border border-ink-400 px-6 py-3.5 text-sm font-semibold",
                       "text-silver-100 transition-colors hover:border-silver-500 hover:bg-ink-800",
                     )}
                   >
-                    {CTA.consultation.label}
-                  </Link>
+                    {CTA.schedule.label}
+                  </MagneticCta>
                 </div>
               </Reveal>
             </div>

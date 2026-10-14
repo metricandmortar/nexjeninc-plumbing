@@ -1,7 +1,7 @@
-import Image from "next/image";
-import Link from "next/link";
 import { ArrowRight, Phone, ShieldCheck } from "lucide-react";
 
+import HeroBackdrop from "@/components/sections/HeroBackdrop";
+import MagneticCta from "@/components/ui/MagneticCta";
 import Reveal from "@/components/ui/Reveal";
 import { CTA, HERO, SITE } from "@/lib/constants";
 import { cn } from "@/lib/utils";
@@ -9,19 +9,9 @@ import { cn } from "@/lib/utils";
 export default function Hero() {
   return (
     <section className="relative isolate overflow-hidden">
-      {/* Backdrop. Decorative, so alt is empty and it is hidden from the a11y
-          tree — the headline carries the meaning. It is the LCP element, so it
-          loads eagerly at high priority and spans the viewport. */}
-      <Image
-        src={HERO.background.src}
-        alt=""
-        aria-hidden="true"
-        fill
-        sizes="100vw"
-        loading="eager"
-        fetchPriority="high"
-        className="-z-10 object-cover"
-      />
+      {/* Parallax photograph. Client-side only for the scroll binding; the
+          image itself still server-renders as the LCP element. */}
+      <HeroBackdrop image={HERO.background} />
 
       {/* Darkening stack, tuned so the job site still reads through it: a flat
           scrim for text contrast, a vertical ramp that goes solid at the floor
@@ -44,8 +34,8 @@ export default function Hero() {
 
           <Reveal delay={0.08}>
             <h1 className="mt-7 font-display text-4xl font-bold leading-[1.08] tracking-display text-silver-100 [text-shadow:0_2px_24px_var(--color-ink-950)] sm:text-5xl lg:text-6xl">
-              High-Ticket Plumbing &amp;{" "}
-              <span className="text-metal-gold">New Construction</span> in Maui
+              <span className="text-metal-gold">{HERO.headline.accent}</span>{" "}
+              {HERO.headline.rest}
             </h1>
           </Reveal>
 
@@ -57,12 +47,12 @@ export default function Hero() {
 
           <Reveal delay={0.24}>
             <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
-              <a
-                href={CTA.emergencyCall.href}
+              <MagneticCta
+                href={CTA.phone.href}
                 className={cn(
                   "group inline-flex items-center justify-center gap-2.5 rounded-card",
                   "bg-accent px-7 py-4 text-base font-semibold text-on-accent",
-                  "shadow-gold transition-all duration-200",
+                  "shadow-gold transition-[background-color,box-shadow] duration-200",
                   "hover:bg-accent-hover hover:shadow-gold-lg",
                 )}
               >
@@ -70,11 +60,11 @@ export default function Hero() {
                   className="h-4.5 w-4.5 transition-transform duration-200 group-hover:-rotate-12"
                   aria-hidden="true"
                 />
-                {CTA.emergencyCall.label}
-              </a>
+                {CTA.phone.label}
+              </MagneticCta>
 
-              <Link
-                href={CTA.consultation.href}
+              <MagneticCta
+                href={CTA.quote.href}
                 className={cn(
                   "group inline-flex items-center justify-center gap-2.5 rounded-card",
                   "border border-ink-400 bg-ink-950/60 px-7 py-4 text-base font-semibold",
@@ -82,12 +72,12 @@ export default function Hero() {
                   "hover:border-silver-500 hover:bg-ink-800/80",
                 )}
               >
-                {CTA.consultation.label}
+                {CTA.quote.label}
                 <ArrowRight
                   className="h-4.5 w-4.5 transition-transform duration-200 group-hover:translate-x-1"
                   aria-hidden="true"
                 />
-              </Link>
+              </MagneticCta>
             </div>
           </Reveal>
 

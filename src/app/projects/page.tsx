@@ -1,14 +1,16 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 
 import PageHeader from "@/components/sections/PageHeader";
 import Reveal from "@/components/ui/Reveal";
 import { SERVICES, SITE } from "@/lib/constants";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Projects",
-  description: `Completed plumbing work by ${SITE.legalName} across ${SITE.serviceRegion} — bathroom remodels, water heater systems, and new construction underground.`,
-};
+export const metadata = pageMetadata({
+  title: "Plumbing Projects on Maui",
+  description: `Completed plumbing work by ${SITE.legalName} on Maui — bathroom remodels, water heater systems, backflow assemblies, and new construction plumbing in Hawaii, from ${SITE.address.city} job sites and beyond.`,
+  path: "/projects",
+  keywords: ["Maui plumbing projects", "new construction plumbing Maui"],
+});
 
 /** Every project photo currently on file, flattened out of the service data. */
 const PROJECT_PHOTOS = SERVICES.flatMap((service) =>

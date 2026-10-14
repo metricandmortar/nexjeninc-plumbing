@@ -1,25 +1,24 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Clock, Mail, MapPin, Phone, ShieldCheck } from "lucide-react";
+import {
+  ArrowRight,
+  Clock,
+  Mail,
+  MapPin,
+  Phone,
+  ShieldCheck,
+} from "lucide-react";
 
+import MagneticCta from "@/components/ui/MagneticCta";
 import { CTA, FOOTER_NAV, SITE } from "@/lib/constants";
 import { cn, isPresent } from "@/lib/utils";
 
 export default function Footer() {
   const year = new Date().getFullYear();
 
-  // Once the client supplies a street address this resolves to "City, HI".
-  // Until then it falls back to the confirmed island, so the row never renders
-  // as a bare state code with nothing in front of it.
-  const locality = [SITE.address.city, SITE.address.region]
-    .filter(isPresent)
-    .join(", ");
-  const locationLine = isPresent(SITE.address.city)
-    ? locality
-    : SITE.serviceRegion;
-
-  const activeSocial = SITE.social.filter((item) => isPresent(item.href));
-  const activeAreas = SITE.serviceAreas.filter(isPresent);
+  const locationLine = isPresent(SITE.address.street)
+    ? `${SITE.address.street} ${SITE.address.city}, ${SITE.address.region} ${SITE.address.postalCode}`
+    : "";
 
   return (
     <footer className="bg-forge border-t border-ink-600">
@@ -139,35 +138,31 @@ export default function Footer() {
                 </li>
               )}
 
-              <li className="flex items-center gap-3 text-silver-300">
-                <Clock
-                  className="h-4 w-4 shrink-0 text-gold-600"
-                  aria-hidden="true"
-                />
-                {isPresent(SITE.hours)
-                  ? `${SITE.hours} · ${SITE.emergencyHours}`
-                  : SITE.emergencyHours}
-              </li>
+              {isPresent(SITE.hours) && (
+                <li className="flex items-center gap-3 text-silver-300">
+                  <Clock
+                    className="h-4 w-4 shrink-0 text-gold-600"
+                    aria-hidden="true"
+                  />
+                  {SITE.hours}
+                </li>
+              )}
             </ul>
 
-            <a
-              href={CTA.emergency.href}
+            <MagneticCta
+              href={CTA.quote.href}
               className={cn(
-                "mt-7 inline-flex items-center gap-2 rounded-card bg-accent",
+                "group mt-7 inline-flex items-center gap-2 rounded-card bg-accent",
                 "px-5 py-3 text-sm font-semibold text-on-accent shadow-gold",
                 "transition-colors hover:bg-accent-hover",
               )}
             >
-              <Phone className="h-4 w-4" aria-hidden="true" />
-              {CTA.emergency.label}
-            </a>
-
-            {activeAreas.length > 0 && (
-              <p className="mt-6 text-xs leading-relaxed text-foreground-subtle">
-                <span className="text-silver-400">Serving </span>
-                {activeAreas.join(" · ")}
-              </p>
-            )}
+              {CTA.quote.label}
+              <ArrowRight
+                className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1"
+                aria-hidden="true"
+              />
+            </MagneticCta>
           </div>
         </div>
 
@@ -177,27 +172,13 @@ export default function Footer() {
             © {year} {SITE.legalName}. All rights reserved.
           </p>
 
-          <div className="flex items-center gap-5">
-            {activeSocial.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                target="_blank"
-                rel="noreferrer noopener"
-                className="text-xs text-foreground-subtle transition-colors hover:text-gold-400"
-              >
-                {item.label}
-              </a>
-            ))}
-
-            <span className="flex items-center gap-1.5 text-xs text-silver-400">
-              <ShieldCheck
-                className="h-3.5 w-3.5 text-gold-500"
-                aria-hidden="true"
-              />
-              {SITE.licenseLabel}
-            </span>
-          </div>
+          <span className="flex items-center gap-1.5 text-xs text-silver-400">
+            <ShieldCheck
+              className="h-3.5 w-3.5 text-gold-500"
+              aria-hidden="true"
+            />
+            {SITE.licenseLabel}
+          </span>
         </div>
       </div>
     </footer>
