@@ -36,7 +36,7 @@ export default function Services() {
           </h2>
           <p className="mt-5 max-w-2xl text-base leading-relaxed text-foreground-muted">
             From the underground rough-in that disappears beneath the slab to
-            the finish work your clients actually see.
+            the beautiful finish work you and your family enjoy every day.
           </p>
         </Reveal>
 
